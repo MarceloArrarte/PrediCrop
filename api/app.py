@@ -5,7 +5,7 @@ from matplotlib.figure import Figure
 from flask import Flask, request
 from data_gateway import get_latest_data
 from predictions import generate_predictions
-from graphs import generate_predictions_graph
+from visualization import generate_predictions_image, generate_predictions_table
 
 app = Flask(__name__)
 
@@ -19,14 +19,9 @@ def make_prediction():
 
     latest_data = get_latest_data(coordinates, time_window, crop)
     predictions =  generate_predictions(latest_data)
-    graph = generate_predictions_graph(latest_data, predictions)
+    imgTag = generate_predictions_image(latest_data, predictions)
+    tableTag = generate_predictions_table(latest_data, predictions)
 
-    return f"<img src='data:image/png;base64,{img2base64(graph)}'/>"
+    return f'{imgTag}{tableTag}'
 
 
-def img2base64(fig: Figure):
-    buf = BytesIO()
-    fig.savefig(buf, format="png")
-    
-    data = base64.b64encode(buf.getbuffer()).decode("ascii")
-    return data
