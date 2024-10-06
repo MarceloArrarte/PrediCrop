@@ -9,6 +9,10 @@ from visualization import generate_predictions_image, generate_predictions_table
 
 app = Flask(__name__)
 
+@app.get("/")
+def say_hi():
+    return 'Hello world!'
+
 @app.post("/make-prediction")
 def make_prediction():
     body = request.json
