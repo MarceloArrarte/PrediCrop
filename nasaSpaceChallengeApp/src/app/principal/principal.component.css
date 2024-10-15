@@ -63,8 +63,13 @@ h5{
 
 .botones-2{
     margin-top: 80px;
+    margin-bottom: 45px;
 }
 
 .boton{
     text-align: center;
+}
+
+.titulo2{
+    margin-bottom: 20px;
 }
