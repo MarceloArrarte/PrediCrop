@@ -1,25 +1,34 @@
 <div class="container mt-5">
     <div class="row">
       <!-- Left column -->
-      <div class="col-md-6">
-        <h5>Select at least one of the following crops</h5>
-        <div>
-          <button class="btn-crop btn-border-left" (click)="toggleCrop('soybean')" [class.active]="selectedCrops.includes('soybean')">SOYBEAN</button>
-          <button class="btn-crop" (click)="toggleCrop('wheat')" [class.active]="selectedCrops.includes('wheat')">WHEAT</button>
-          <button class="btn-crop" (click)="toggleCrop('corn')" [class.active]="selectedCrops.includes('corn')">CORN</button>
-          <button class="btn-crop btn-border-right" (click)="toggleCrop('barley')" [class.active]="selectedCrops.includes('barley')">BARLEY</button>
+      <div class="col-md-6 ">
+
+        <div class="botones-1">
+
+          <h5>Select at least one of the following crops</h5>
+          <div class="botones">
+            <button class="btn-crop btn-border-left" (click)="toggleCrop('soybean')" [class.active]="selectedCrops.includes('soybean')">SOYBEAN</button>
+            <button class="btn-crop" (click)="toggleCrop('wheat')" [class.active]="selectedCrops.includes('wheat')">WHEAT</button>
+            <button class="btn-crop" (click)="toggleCrop('corn')" [class.active]="selectedCrops.includes('corn')">CORN</button>
+            <button class="btn-crop btn-border-right" (click)="toggleCrop('barley')" [class.active]="selectedCrops.includes('barley')">BARLEY</button>
+          </div>
+
+        </div>
+        
+        <div class="botones-2">
+
+          <h5 class="mt-4">Select how many days ahead you want your prediction</h5>
+          <div class="botones">
+            <button class="btn-days btn-border-left" (click)="selectDays(30)" [class.active]="selectedDays === 30">30</button>
+            <button class="btn-days" (click)="selectDays(60)" [class.active]="selectedDays === 60">60</button>
+            <button class="btn-days" (click)="selectDays(90)" [class.active]="selectedDays === 90">90</button>
+            <button class="btn-days btn-border-right" (click)="selectDays(120)" [class.active]="selectedDays === 120">120</button>
+          </div>
+
         </div>
   
-        <h5 class="mt-4">Select how many days ahead you want your prediction</h5>
-        <div>
-          <button class="btn-days btn-border-left" (click)="selectDays(30)" [class.active]="selectedDays === 30">30</button>
-          <button class="btn-days" (click)="selectDays(60)" [class.active]="selectedDays === 60">60</button>
-          <button class="btn-days" (click)="selectDays(90)" [class.active]="selectedDays === 90">90</button>
-          <button class="btn-days btn-border-right" (click)="selectDays(120)" [class.active]="selectedDays === 120">120</button>
-        </div>
-  
-        <div class="mt-4">
-          <button class="send-btn" (click)="sendPrediction()">Send</button>
+        <div class="mt-4 boton">
+          <button class="send-btn botones" (click)="sendPrediction()">Send</button>
         </div>
       </div>
   
