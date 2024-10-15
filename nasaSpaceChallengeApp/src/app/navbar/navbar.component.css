@@ -12,3 +12,13 @@
     text-align: center;
     margin-top: 10px;
 }
+
+img{
+
+    width: 200px;
+    height: 55px;
+}
+
+.nav-item{
+    margin-top: 3px;
+}
