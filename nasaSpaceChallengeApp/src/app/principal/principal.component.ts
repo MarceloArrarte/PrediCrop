@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ApiService } from '../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-principal',
@@ -10,6 +12,8 @@ import { Component } from '@angular/core';
 export class PrincipalComponent {
   selectedCrops: string[] = [];
   selectedDays: number | null = null;
+
+  constructor(private router: Router, private apiService: ApiService){}
 
   toggleCrop(crop: string) {
     if (this.selectedCrops.includes(crop)) {
@@ -25,8 +29,17 @@ export class PrincipalComponent {
 
   sendPrediction() {
     if (this.selectedCrops.length > 0 && this.selectedDays) {
-      // Aquí iría la lógica para enviar la predicción
+      /*
       console.log('Sending prediction:', this.selectedCrops, this.selectedDays);
+      let data = {
+        crops: this.selectedCrops,
+        days: this.selectedDays
+      };
+      this.apiService.getPrediction(data).then((response) => {
+        console.log('Prediction response:', response);
+      });
+      */
+      this.router.navigate(['/priceTrends']);
     } else {
       console.log('Please select at least one crop and a prediction time');
     }
