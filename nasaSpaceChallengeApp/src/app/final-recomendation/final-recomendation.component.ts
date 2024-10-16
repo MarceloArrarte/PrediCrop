@@ -9,4 +9,5 @@ import { Component } from '@angular/core';
 })
 export class FinalRecomendationComponent {
 
+  textBox: string = 'La tecnología ha transformado profundamente la forma en que vivimos, trabajamos y nos comunicamos. Desde el auge de los dispositivos móviles hasta el';
 }

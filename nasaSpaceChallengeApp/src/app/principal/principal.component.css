@@ -47,23 +47,25 @@
     width: 70%;
 }
 
+
 h5{
     text-align: center;
+    margin-top: 30px;
 }
 
 
 .botones{
     text-align: center;
-    margin-top: 40px;
+    margin-top: 50px;
 }
 
 .botones-1{
-    margin-top: 55px;
+    margin-top: 70px;
 }
 
 .botones-2{
-    margin-top: 80px;
-    margin-bottom: 45px;
+    margin-top: 40px;
+    margin-bottom: 40px;
 }
 
 .boton{
@@ -73,3 +75,20 @@ h5{
 .titulo2{
     margin-bottom: 20px;
 }
+
+body{
+    background-image: url('../../assets/Predicrop\ -\ NASA\ SPACE\ apps\ CHALLENGE\ \(13.1\).jpg');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    height: 100vh; 
+    width: 100%; 
+    margin: 0; 
+    margin-top: -50px;
+}
+
+.container {
+    padding-top: 30px;
+}
+
+
