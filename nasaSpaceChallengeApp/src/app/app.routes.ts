@@ -5,10 +5,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FinalRecomendationComponent } from './final-recomendation/final-recomendation.component';
 import { PriceTrendsComponent } from './price-trends/price-trends.component';
 
-
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
     { path: 'newPrediction', component: PrincipalComponent },
-    { path: 'priceTrends', component: PriceTrendsComponent }
+    { path: 'priceTrends', component: PriceTrendsComponent },
+    { path: 'finalRecomendation', component: FinalRecomendationComponent }
 ];

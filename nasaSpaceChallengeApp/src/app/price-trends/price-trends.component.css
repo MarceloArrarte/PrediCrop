@@ -39,6 +39,7 @@
     padding: 10px;
     word-wrap: break-word; 
     box-sizing: border-box; 
+    border-radius: 10px;
 }
 
 .text-box2{
@@ -49,6 +50,8 @@
     padding: 10px;
     word-wrap: break-word; 
     box-sizing: border-box; 
+    border-radius: 10px;
+
 }
 
 .text-box3{
@@ -59,6 +62,8 @@
     padding: 10px;
     word-wrap: break-word; 
     box-sizing: border-box; 
+    border-radius: 10px;
+
 }
 
 
