@@ -1,3 +1,6 @@
 Flask
 matplotlib
 pandas
+joblib
+numpy
+xgboost
