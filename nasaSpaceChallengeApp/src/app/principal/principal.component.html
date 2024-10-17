@@ -1,0 +1,50 @@
+<body>
+  
+  <div class="container mt-5">
+      <div class="row">
+        <!-- Left column -->
+        <div class="col-md-6 ">
+
+          <div class="botones-1">
+
+            <h5>Select at least one of the following crops</h5>
+            <div class="botones">
+              <button class="btn-crop btn-border-left" (click)="toggleCrop('soybean')" [class.active]="selectedCrops.includes('soybean')">SOYBEAN</button>
+              <button class="btn-crop" (click)="toggleCrop('wheat')" [class.active]="selectedCrops.includes('wheat')">WHEAT</button>
+              <button class="btn-crop" (click)="toggleCrop('corn')" [class.active]="selectedCrops.includes('corn')">CORN</button>
+              <button class="btn-crop btn-border-right" (click)="toggleCrop('barley')" [class.active]="selectedCrops.includes('barley')">BARLEY</button>
+            </div>
+
+          </div>
+          
+          <div class="botones-2">
+
+            <h5 class="mt-4">Select how many days ahead you want your prediction</h5>
+            <div class="botones">
+              <button class="btn-days btn-border-left" (click)="selectDays(30)" [class.active]="selectedDays === 30">30</button>
+              <button class="btn-days" (click)="selectDays(60)" [class.active]="selectedDays === 60">60</button>
+              <button class="btn-days" (click)="selectDays(90)" [class.active]="selectedDays === 90">90</button>
+              <button class="btn-days btn-border-right" (click)="selectDays(120)" [class.active]="selectedDays === 120">120</button>
+            </div>
+
+          </div>
+    
+          <div class="mt-4 boton">
+            <button class="send-btn botones" (click)="sendPrediction()">Send</button>
+          </div>
+        </div>
+    
+        <!-- Right column -->
+        <div class="col-md-6">
+          <h5 class="titulo2">Select a place on the Map</h5>
+          <div class="map-container">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345093126!2d144.95373531531775!3d-37.81720997975142!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577e9d78dc2c30!2sFederation+Square!5e0!3m2!1sen!2sau!4v1427011445700"
+              frameborder="0" style="border:0" allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      </div>
+  </div>
+    
+</body>
