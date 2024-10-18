@@ -13,12 +13,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./predicropApi
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Change directory
-        run: cd predicropApi
 
       - name: Set up Python version
         uses: actions/setup-python@v1
@@ -31,10 +31,7 @@ jobs:
           source venv/bin/activate
 
       - name: Install dependencies
-        run: |
-          pwd
-          ls -la
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       - name: Zip artifact for deployment
