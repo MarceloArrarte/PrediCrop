@@ -34,7 +34,7 @@ jobs:
       with:
         push: true
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_614d9de2cbdb442ba761d2c05cc19d74 }}/predicrop-api:${{ github.sha }}
-        file: ./Dockerfile
+        file: ./predicropApi/Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
