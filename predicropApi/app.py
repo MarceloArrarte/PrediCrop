@@ -3,9 +3,6 @@ from io import BytesIO
 
 from matplotlib.figure import Figure
 from flask import Flask, request, jsonify
-from data_gateway import get_latest_data
-from predictions import generate_predictions
-from visualization import generate_predictions_image, generate_predictions_table
 import joblib
 from datetime import date
 import pandas as pd
