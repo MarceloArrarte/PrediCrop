@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  predicrop-api:
+    build:
+      context: ./predicropApi
+      dockerfile: ./Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+    volumes:
+      - ./predicropApi:/app
+    restart: unless-stopped
