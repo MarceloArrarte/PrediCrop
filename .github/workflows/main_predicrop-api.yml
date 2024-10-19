@@ -12,9 +12,6 @@ on:
 jobs:
   build:
     runs-on: 'ubuntu-latest'
-    defaults:
-      run:
-        working-directory: ./predicropApi
 
     steps:
     - uses: actions/checkout@v2
@@ -34,7 +31,8 @@ jobs:
       with:
         push: true
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_614d9de2cbdb442ba761d2c05cc19d74 }}/predicrop-api:${{ github.sha }}
-        file: ./predicropApi/Dockerfile
+        context: ./predicropApi
+        file: ./Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
