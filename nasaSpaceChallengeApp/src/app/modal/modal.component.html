@@ -1,0 +1,15 @@
+<div class="modal fade" tabindex="-1" #modalElement>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ title }}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+      </div>
+      <div class="modal-body d-flex align-items-center">
+        <img [src]="imgSrc" alt="Modal Image" class="img-fluid me-3" style="width: 100px;" />
+        <p>{{ content }}</p>
+      </div>
+     
+    </div>
+  </div>
+</div>
