@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://localhost:5000'
+    apiUrl: 'https://predicrop-api-cdd4a6a7fwd2dacq.eastus2-01.azurewebsites.net'
 };
