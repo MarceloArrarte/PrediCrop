@@ -10,9 +10,10 @@ import joblib
 from datetime import date
 import pandas as pd
 import numpy as np
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.get("/")
 def say_hi():
@@ -37,7 +38,7 @@ def make_prediction():
     """
     return jsonify({"predictions": predict_days(int(days)).tolist()})
 
-@app.get("/forecast")
+@app.post("/forecast")
 def get_temperature():
     body = request.json
     days = body.get('days')
