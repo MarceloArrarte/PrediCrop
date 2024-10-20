@@ -11,34 +11,45 @@ export class ApiService {
   constructor() { }
 
   getPrediction(data: any) {
-    return new Promise((resolve, reject) => {
-      fetch(environment.apiUrl + '/make-prediction', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(response => {
-        response.json().then(data => {
-          resolve(data);
+    try {
+      return new Promise((resolve, reject) => {
+        fetch(environment.apiUrl + '/make-prediction', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(response => {
+          response.json().then(data => {
+            resolve(data);
+          });
         });
       });
-    });
+    } catch (error) {
+      throw error
+    }
+
   }
 
-  getForecast(data: any){
-    return new Promise((resolve, reject) => {
-      fetch(environment.apiUrl + '/forecast', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(response => {
-        response.json().then(data => {
-          resolve(data);
+  getForecast(data: any) {
+    try {
+
+
+      return new Promise((resolve, reject) => {
+        fetch(environment.apiUrl + '/forecast', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(response => {
+          response.json().then(data => {
+            resolve(data);
+          });
         });
       });
-    });
+    } catch (error) {
+      throw error
+    }
   }
 }
