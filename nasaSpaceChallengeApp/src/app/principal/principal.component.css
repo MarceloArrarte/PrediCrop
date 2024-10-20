@@ -139,7 +139,7 @@ body{
     background-color: rgba(255, 255, 255, 0.75);
     border-radius: 20px;
     overflow-y: visible;
-    margin-top: 70px;
+    margin-top: 40px;
 
 }
 
@@ -151,11 +151,12 @@ body{
 }
 
 .grid1{
+    height: 70vh;
     display: grid;
-    grid-template-columns: 900px 500px;
-    grid-template-rows: 200px 300px;
-    align-items: center;
-    justify-content: flex-start;
+    grid-template-columns: 55% 40%;
+    grid-template-rows: 35vh 35vh;
+    align-items: end;
+    justify-content: center;
     gap:10px;
 }
 
@@ -170,12 +171,14 @@ body{
     grid-column: 2/ 3;
     grid-row: 1 / 2;
     align-self: flex-end;
+    height: 35vh;
 }
 
 .third1{
     grid-column: 2/ 3;
     grid-row: 2 / 3;
     align-self: flex-end;
+    height: 35vh;
 }
 
 
@@ -184,21 +187,61 @@ body{
     grid-template-columns: 1fr;
     grid-template-rows: 500px 500px 500px;
     align-items: center;
-    gap: 120px;
+    gap: 200px;
+    margin-bottom: 50px;
 }
 
 .first2{
     grid-row: 1 / 2;
+    grid-column: 1/ 2;
+    height: 400px !important;
 }
 
 .second2{
     grid-row: 2 / 3;
+    height: 400px !important;
 }
 
 .third2{
     grid-row: 3/ 4;
+    height: 400px !important;
 }
 
 
-
-
+@media screen and (max-width: 1200px) {
+    .grid1, .grid2{
+        display: grid;
+        height: auto;
+        grid-template-columns: 90%;
+        grid-template-rows: 400px 400px 400px;
+        align-items: center;
+        justify-content: center;
+        gap: 50px;
+    }
+    
+    
+    .first1, .first2{
+        grid-row: 1 / 2;
+        grid-column: 1 / 2;
+        height: 400px !important;
+        justify-self: center !important;
+        align-self: center !important;
+    }
+    
+    .second1, .second2{
+        grid-row: 2 / 3;
+        grid-column: 1 / 2;
+        height: 400px !important;
+        justify-self: center !important;
+        align-self: center !important;
+    }
+    
+    .third1, .third2{
+        grid-column: 1 / 2;
+        grid-row: 3/ 4;
+        height: 400px !important;
+        justify-self: center !important;
+        align-self: center !important;
+    }
+    
+}

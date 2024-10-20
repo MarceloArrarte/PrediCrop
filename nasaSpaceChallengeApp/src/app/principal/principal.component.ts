@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, HostListener, Renderer2, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
 import * as Plot from '@observablehq/plot';
@@ -72,11 +72,14 @@ export class PrincipalComponent {
     }
   }
 
-
   @ViewChild('chart', { static: true }) chartContainer: ElementRef | undefined;
   @ViewChild('precipitationChart', { static: true }) precipitationContainer: ElementRef | undefined;
   @ViewChild('temperatureChart', { static: true }) temperatureContainer: ElementRef | undefined;
   @ViewChild('chartsContainer') chartsContainer!: ElementRef;
+
+
+
+
 
 
   private formattedData: { date: Date, value: number }[] = [];
@@ -93,6 +96,77 @@ export class PrincipalComponent {
 
   selectDays(days: number) {
     this.selectedDays = days;
+  }
+
+
+  less1200 = false
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    const htmlElement = document.documentElement;
+    if (window.innerWidth <= 1200 && (this.chartContainer && this.precipitationContainer && this.temperatureContainer)) {
+      this.less1200 = true
+
+      this.renderer.removeClass(this.chartsContainer.nativeElement, 'grid1');
+      this.renderer.removeClass(this.chartContainer.nativeElement, 'first1');
+      this.renderer.removeClass(this.precipitationContainer.nativeElement, 'second1');
+      this.renderer.removeClass(this.temperatureContainer.nativeElement, 'third1');
+
+      this.renderer.addClass(this.chartsContainer.nativeElement, 'grid2');
+      this.renderer.addClass(this.chartContainer.nativeElement, 'first2');
+      this.renderer.addClass(this.precipitationContainer.nativeElement, 'second2');
+      this.renderer.addClass(this.temperatureContainer.nativeElement, 'third2');
+
+      this.chartFirstHeight = 500
+      this.chartSecondHeight = 500
+      this.chartThirdHeight = 500
+
+      this.chartFistWidth = 1500
+      this.chartSecondWidth = 1500
+      this.chartThirdWidth = 1500
+
+      this.renderMainChart()
+      this.renderPrecipitationChart()
+      this.renderTemperatureChart()
+    } else {
+      if (this.less1200 && (this.chartContainer && this.precipitationContainer && this.temperatureContainer)) {
+        this.less1200 = false
+        this.renderer.addClass(this.chartsContainer.nativeElement, 'grid1');
+        this.renderer.addClass(this.chartContainer.nativeElement, 'first1');
+        this.renderer.addClass(this.precipitationContainer.nativeElement, 'second1');
+        this.renderer.addClass(this.temperatureContainer.nativeElement, 'third1');
+
+        this.renderer.removeClass(this.chartsContainer.nativeElement, 'grid2');
+        this.renderer.removeClass(this.chartContainer.nativeElement, 'first2');
+        this.renderer.removeClass(this.precipitationContainer.nativeElement, 'second2');
+        this.renderer.removeClass(this.temperatureContainer.nativeElement, 'third2');
+
+
+        if (this.selectedDays && this.selectedDays <= 60) {
+          this.chartFirstHeight = 500
+          this.chartSecondHeight = 250
+          this.chartThirdHeight = 250
+
+          this.chartFistWidth = 900
+          this.chartSecondWidth = 900
+          this.chartThirdWidth = 900
+        } else {
+          this.chartFirstHeight = 500
+          this.chartSecondHeight = 500
+          this.chartThirdHeight = 500
+    
+          this.chartFistWidth = 1500
+          this.chartSecondWidth = 1500
+          this.chartThirdWidth = 1500
+        }
+
+
+        this.renderMainChart()
+        this.renderPrecipitationChart()
+        this.renderTemperatureChart()
+
+      }
+    }
   }
 
   sendPrediction() {
@@ -134,8 +208,8 @@ export class PrincipalComponent {
                     this.chartThirdHeight = 250
 
                     this.chartFistWidth = 900
-                    this.chartSecondWidth = 500
-                    this.chartThirdWidth = 500
+                    this.chartSecondWidth = 900
+                    this.chartThirdWidth = 900
 
                   }
 
@@ -181,8 +255,7 @@ export class PrincipalComponent {
       }
 
     } catch (error) {
-      console.error('Predictions not found in response.');
-      this.launchModal(1)
+
     }
   }
 
