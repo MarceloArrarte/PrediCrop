@@ -180,6 +180,9 @@ export class PrincipalComponent {
           crops: this.selectedCrops,
           days: this.selectedDays
         };
+
+        this.loading = true;
+
         this.apiService.getPrediction(data).then((response: any) => {
           if (response && response.predictions) {
             this.predictions = response.predictions;
@@ -239,12 +242,15 @@ export class PrincipalComponent {
                 console.error("Falta el pronostico")
                 this.launchModal(1)
               }
+
+              this.loading = false;
             })
 
 
           } else {
             console.error('Predictions not found in response.');
             this.launchModal(1)
+            this.loading = false;
           }
         });
 
