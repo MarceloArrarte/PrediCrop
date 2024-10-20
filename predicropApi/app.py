@@ -1,7 +1,3 @@
-import base64
-from io import BytesIO
-
-from matplotlib.figure import Figure
 from flask import Flask, request, jsonify
 import joblib
 from datetime import date
