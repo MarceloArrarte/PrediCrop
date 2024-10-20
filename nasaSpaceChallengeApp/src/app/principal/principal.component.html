@@ -44,7 +44,13 @@
         </div>
 
         <div class="mt-4 boton">
-          <button class="btn-effect1 send-btn botones" (click)="sendPrediction()">Send</button>
+          <button class="btn-effect1 send-btn botones" (click)="sendPrediction()" [disabled]="loading">
+            <ng-container *ngIf="loading; else btnSendText">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Loading...
+            </ng-container>
+            <ng-template #btnSendText>Send</ng-template>
+          </button>
         </div>
       </div>
 
