@@ -8,6 +8,7 @@ services:
     environment:
       - FLASK_ENV=development
       - FLASK_DEBUG=True
+      - ORIGIN_WHITELIST=http://localhost:4200
     volumes:
       - src-api:/app
     restart: unless-stopped

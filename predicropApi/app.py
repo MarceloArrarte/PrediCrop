@@ -4,9 +4,14 @@ from datetime import date
 import pandas as pd
 import numpy as np
 from flask_cors import CORS
+import os
+
+allowed_origins = os.environ.get('ORIGIN_WHITELIST')
+if allowed_origins == None or allowed_origins == '':
+    print('Missing env var: ORIGIN_WHITELIST')
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=allowed_origins)
 
 @app.get("/")
 def say_hi():
