@@ -18,6 +18,7 @@ export class PrincipalComponent {
   selectedCrops: string[] = [];
   selectedDays: number | null = null;
   predictions = [];
+  loading = false;
 
 
   forecast = {

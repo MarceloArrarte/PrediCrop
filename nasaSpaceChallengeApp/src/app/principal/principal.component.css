@@ -66,13 +66,13 @@ h5{
 }
 
 .btn-crop.active, .btn-days.active {
-    background-color: #999;
+    background-color: #256828;
 }
 
 
 .btn-crop.active:hover, 
 .btn-days.active:hover {
-    background-color: #999 !important; 
+    background-color: #1f5622 !important; 
 }
 
 .botones-1{
