@@ -1,31 +1,87 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
 import * as Plot from '@observablehq/plot';
 import * as d3 from 'd3';
 import { BaseType, ZoomBehavior } from 'd3';
+import { CommonModule } from '@angular/common';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-principal',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, ModalComponent],
   templateUrl: './principal.component.html',
   styleUrl: './principal.component.css'
 })
 export class PrincipalComponent {
   selectedCrops: string[] = [];
   selectedDays: number | null = null;
+  predictions = [];
 
+
+  forecast = {
+    precipitation: {}, temp: {}
+  };
+
+  displayColBtns = "block"
+  displayBackBtn = "none"
+  displayCharts = "block"
+
+  // Charts heigth
+  chartFirstHeight = 600
+  chartSecondHeight = 300
+  chartThirdHeight = 300
+
+  // Charts width
+  chartFistWidth = 500
+  chartSecondWidth = 400
+  chartThirdWidth = 400
+
+  // For modal
+  @ViewChild(ModalComponent) modal!: ModalComponent;
+
+  launchModal(opcion: number) {
+    switch (opcion) {
+      case 0:
+        this.modal.open(
+          'SUCCESS',
+          '../../assets/check.png',
+          'Successful operation'
+        );
+        break;
+
+      case 1:
+        this.modal.open(
+          'ERROR',
+          '../../assets/error.png',
+          'An error has occurred. Contact support for more information.'
+        );
+        break;
+
+      case 2:
+        this.modal.open(
+          'WARNING',
+          '../../assets/warning.png',
+          'You have to select at least one crop and a number of days'
+        );
+        break;
+
+      default:
+        break;
+    }
+  }
 
 
   @ViewChild('chart', { static: true }) chartContainer: ElementRef | undefined;
   @ViewChild('precipitationChart', { static: true }) precipitationContainer: ElementRef | undefined;
   @ViewChild('temperatureChart', { static: true }) temperatureContainer: ElementRef | undefined;
+  @ViewChild('chartsContainer') chartsContainer!: ElementRef;
 
 
   private formattedData: { date: Date, value: number }[] = [];
 
-  constructor(private router: Router, private apiService: ApiService) { }
+  constructor(private cdr: ChangeDetectorRef, private router: Router, private apiService: ApiService, private renderer: Renderer2) { }
 
   toggleCrop(crop: string) {
     if (this.selectedCrops.includes(crop)) {
@@ -41,198 +97,113 @@ export class PrincipalComponent {
 
   sendPrediction() {
     if (this.selectedCrops.length > 0 && this.selectedDays) {
-      /*
-      console.log('Sending prediction:', this.selectedCrops, this.selectedDays);
+
       let data = {
         crops: this.selectedCrops,
         days: this.selectedDays
       };
-      this.apiService.getPrediction(data).then((response) => {
-        console.log('Prediction response:', response);
+      this.apiService.getPrediction(data).then((response: any) => {
+        if (response && response.predictions) {
+          this.predictions = response.predictions;
+
+          // Ahora hacemos la petición del pronostico del tiempo
+          this.apiService.getForecast(data).then((response: any) => {
+
+            if (response && response.forecast) {
+
+              this.forecast.precipitation = response.forecast.precipitation
+              this.forecast.temp = response.forecast.temp
+
+              this.displayColBtns = "none"
+              this.displayBackBtn = "block"
+              this.displayCharts = "grid"
+
+
+              if (this.selectedDays != null && this.selectedDays < 90) {
+                if (this.chartContainer != undefined && this.precipitationContainer != undefined && this.temperatureContainer != undefined) {
+                  this.renderer.addClass(this.chartsContainer.nativeElement, 'grid1');
+                  this.renderer.addClass(this.chartContainer.nativeElement, 'first1');
+                  this.renderer.addClass(this.precipitationContainer.nativeElement, 'second1');
+                  this.renderer.addClass(this.temperatureContainer.nativeElement, 'third1');
+
+                  this.chartFirstHeight = 500
+                  this.chartSecondHeight = 250
+                  this.chartThirdHeight = 250
+
+                  this.chartFistWidth = 900
+                  this.chartSecondWidth = 500
+                  this.chartThirdWidth = 500
+
+                }
+
+              } else {
+                if (this.chartContainer != undefined && this.precipitationContainer != undefined && this.temperatureContainer != undefined) {
+
+                  this.renderer.addClass(this.chartsContainer.nativeElement, 'grid2');
+                  this.renderer.addClass(this.chartContainer.nativeElement, 'first2');
+                  this.renderer.addClass(this.precipitationContainer.nativeElement, 'second2');
+                  this.renderer.addClass(this.temperatureContainer.nativeElement, 'third2');
+
+                  this.chartFirstHeight = 500
+                  this.chartSecondHeight = 500
+                  this.chartThirdHeight = 500
+
+                  this.chartFistWidth = 1500
+                  this.chartSecondWidth = 1500
+                  this.chartThirdWidth = 1500
+                }
+              }
+
+              this.renderMainChart()
+              this.renderPrecipitationChart()
+              this.renderTemperatureChart()
+            } else {
+              console.error("Falta el pronostico")
+              this.launchModal(1)
+            }
+          })
+
+
+        } else {
+          console.error('Predictions not found in response.');
+          this.launchModal(1)
+        }
       });
-      */
+
       //this.router.navigate(['/priceTrends']);
-      this.renderMainChart()
-      this.renderPrecipitationChart()
-      this.renderTemperatureChart()
+
     } else {
       console.log('Please select at least one crop and a prediction time');
+      this.launchModal(2)
+     }
+  }
+
+  viewButtons() {
+    this.displayColBtns = "block"
+    this.displayBackBtn = "none"
+    this.displayCharts = "none"
+    if (this.chartContainer != undefined && this.precipitationContainer != undefined && this.temperatureContainer != undefined) {
+
+      this.renderer.removeClass(this.chartsContainer.nativeElement, 'grid1');
+      this.renderer.removeClass(this.chartContainer.nativeElement, 'first1');
+      this.renderer.removeClass(this.precipitationContainer.nativeElement, 'second1');
+      this.renderer.removeClass(this.temperatureContainer.nativeElement, 'third1');
+
+      this.renderer.removeClass(this.chartsContainer.nativeElement, 'grid2');
+      this.renderer.removeClass(this.chartContainer.nativeElement, 'first2');
+      this.renderer.removeClass(this.precipitationContainer.nativeElement, 'second2');
+      this.renderer.removeClass(this.temperatureContainer.nativeElement, 'third2');
     }
   }
-  /*
-  selectedCrops: string[] = [];
-  selectedDays: number | null = null;
-  selectedLocation: { x: number, y: number } | null = null;
 
-  selectCrop(crop: string) {
-    const index = this.selectedCrops.indexOf(crop);
-    if (index > -1) {
-      this.selectedCrops.splice(index, 1);
-    } else {
-      this.selectedCrops.push(crop);
-    }
-  }
 
-  selectDays(days: number) {
-    this.selectedDays = days;
-  }
 
-  selectLocation(event: MouseEvent) {
-    const img = event.target as HTMLImageElement;
-    const rect = img.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    this.selectedLocation = { x, y };
-  }
 
-  isFormValid(): boolean {
-    return this.selectedCrops.length > 0 && this.selectedDays !== null && this.selectedLocation !== null;
-  }
 
-  sendPrediction() {
-    if (this.isFormValid()) {
-      console.log('Sending prediction:', {
-        crops: this.selectedCrops,
-        days: this.selectedDays,
-        location: this.selectedLocation
-      });
-    }
-  }
-    */
-  predictions = [
-    978.9837646484375,
-    966.9900512695312,
-    978.172119140625,
-    978.9837646484375,
-    966.8010864257812,
-    956.9705200195312,
-    978.9837646484375,
-    966.9900512695312,
-    978.9837646484375,
-    973.30712890625,
-    978.9837646484375,
-    966.8010864257812,
-    956.9705200195312,
-    956.9705200195312,
-    956.9705200195312,
-    966.9900512695312,
-    966.9900512695312,
-    966.8010864257812,
-    978.9837646484375,
-    978.9837646484375,
-    978.172119140625,
-    966.9900512695312,
-    966.9900512695312,
-    966.9900512695312,
-    956.9705200195312,
-    966.9900512695312,
-    978.9837646484375,
-    978.9837646484375,
-    966.9900512695312,
-    966.9900512695312,
-    978.9837646484375,
-    966.9900512695312,
-    978.9837646484375,
-    978.9837646484375,
-    979.053466796875,
-    966.9900512695312,
-    966.8010864257812,
-    978.9837646484375,
-    978.9837646484375,
-    966.9900512695312,
-    978.9837646484375,
-    966.9900512695312,
-    978.9837646484375,
-    978.9837646484375,
-    973.30712890625,
-    966.9900512695312,
-    966.9900512695312,
-    966.9900512695312,
-    978.9837646484375,
-    956.9705200195312,
-    978.9837646484375,
-    978.9837646484375,
-    966.9900512695312,
-    966.9900512695312,
-    978.9837646484375,
-    978.9837646484375,
-    956.9705200195312,
-    966.9900512695312,
-    966.9900512695312,
-    966.9900512695312,
-    966.8010864257812,
-    966.9900512695312,
-    966.9900512695312,
-    978.9837646484375,
-    966.9900512695312,
-    966.9900512695312,
-    979.053466796875,
-    978.9837646484375,
-    966.9900512695312,
-    978.172119140625,
-    966.9900512695312,
-    978.172119140625,
-    956.9705200195312,
-    966.9900512695312,
-    956.9705200195312,
-    966.9900512695312,
-    978.9837646484375,
-    978.9837646484375,
-    973.30712890625,
-    966.8010864257812,
-    973.30712890625,
-    970.6570434570312,
-    978.9837646484375,
-    956.9705200195312,
-    966.9900512695312,
-    979.053466796875,
-    978.9837646484375,
-    966.9900512695312,
-    973.30712890625,
-    978.9837646484375,
-    966.9900512695312,
-    978.9837646484375,
-    978.9837646484375,
-    978.9837646484375,
-    978.9837646484375,
-    978.9837646484375,
-    966.9900512695312,
-    966.9900512695312,
-    956.9705200195312,
-    966.9900512695312,
-    978.9837646484375,
-    966.9900512695312,
-    966.9900512695312
-  ];
-
-  forecast = {
-    precipitation: {
-      "77": 1.17013127915561,
-      "78": 6.00787015957758,
-      "79": 1.63880109600723,
-      "80": 0.910342574119568,
-      "81": 11.458530575037,
-      "82": 0.0,
-      "83": 0.722214162349701,
-      "84": 6.98053057491779,
-      "85": 0.904207296669483,
-      "86": 1.85810767114162
-    }, temp: {
-      "77": 57.2417576599122,
-      "78": 46.169305305481,
-      "79": 47.3183198738099,
-      "80": 52.329298286438,
-      "81": 51.0187477874756,
-      "82": 49.704742603302,
-      "83": 55.3994216728211,
-      "84": 53.6133245277405,
-      "85": 60.5031890678406,
-      "86": 52.1265009689334
-    }
-  };
 
 
   renderMainChart() {
+
     const dates = Array.from({ length: this.predictions.length }, (_, i) =>
       new Date(Date.now() + i * 24 * 60 * 60 * 1000)
     );
@@ -247,7 +218,7 @@ export class PrincipalComponent {
           {
             x: 'date',
             y: 'value',
-            fill: 'steelblue',
+            fill: 'green',
             fillOpacity: 0.3,
             curve: 'catmull-rom',
           }
@@ -257,7 +228,7 @@ export class PrincipalComponent {
           {
             x: 'date',
             y: 'value',
-            fill: 'red',
+            fill: 'green',
             r: 4,
             title: (d) => `Value: ${d.value.toFixed(2)}`,
           }
@@ -272,8 +243,12 @@ export class PrincipalComponent {
         grid: true,
         domain: [minPrediction - 10, maxPrediction + 10],
       },
+      height: this.chartFirstHeight,
+      width: this.chartFistWidth,
       style: {
         fontFamily: 'Arial, sans-serif',
+
+
       }
     });
 
@@ -294,14 +269,14 @@ export class PrincipalComponent {
   }
 
   renderPrecipitationChart() {
-    const precipitationValues = Object.values(this.forecast.precipitation);
+    const precipitationValues: number[] = Object.values(this.forecast.precipitation);
     const dates = Array.from({ length: precipitationValues.length }, (_, i) =>
       new Date(Date.now() + i * 24 * 60 * 60 * 1000)
     );
-  
+
     const minPrecipitation = Math.min(...precipitationValues);
     const maxPrecipitation = Math.max(...precipitationValues);
-  
+
     const chart = Plot.plot({
       marks: [
         // Area beneath the precipitation curve
@@ -314,7 +289,7 @@ export class PrincipalComponent {
             fillOpacity: 0.35,  // Adjust opacity for better visibility
             curve: 'catmull-rom', // Smooth curve
           }
-        ),Plot.line(
+        ), Plot.line(
           dates.map((date, i) => ({ date, value: precipitationValues[i] })),
           {
             x: 'date',
@@ -344,12 +319,14 @@ export class PrincipalComponent {
         grid: true,
         domain: [minPrecipitation - 1, maxPrecipitation + 1],
       },
-      height: 150,  // Smaller height for the secondary graph
+      height: this.chartSecondHeight,
+      width: this.chartSecondWidth,
       style: {
         fontFamily: 'Arial, sans-serif',
+
       }
     });
-  
+
     if (this.precipitationContainer && this.precipitationContainer.nativeElement) {
       this.precipitationContainer.nativeElement.innerHTML = '';
       this.precipitationContainer.nativeElement.appendChild(chart);
@@ -357,7 +334,7 @@ export class PrincipalComponent {
   }
 
   renderTemperatureChart() {
-    const temperatureValues = Object.values(this.forecast.temp);
+    const temperatureValues: number[] = Object.values(this.forecast.temp);
     const dates = Array.from({ length: temperatureValues.length }, (_, i) =>
       new Date(Date.now() + i * 24 * 60 * 60 * 1000)
     );
@@ -373,7 +350,7 @@ export class PrincipalComponent {
           {
             x: 'date',
             y: 'value',
-            fill: 'yellow',    // Fill color for the area
+            fill: 'red',    // Fill color for the area
             fillOpacity: 0.4,  // Adjust the opacity of the fill
             curve: 'catmull-rom', // Smooth curve
             clip: true         // Ensure the fill stays within the plot's y-axis bounds
@@ -385,7 +362,7 @@ export class PrincipalComponent {
           {
             x: 'date',
             y: 'value',
-            stroke: 'orange',  // Line color
+            stroke: 'red',  // Line color
             curve: 'catmull-rom', // Smooth curve
           }
         ),
@@ -395,7 +372,7 @@ export class PrincipalComponent {
           {
             x: 'date',
             y: 'value',
-            fill: 'orange',
+            fill: 'red',
             r: 3,
             title: (d) => `Temperature: ${d.value.toFixed(2)} °F`,
           }
@@ -410,7 +387,8 @@ export class PrincipalComponent {
         grid: true,
         domain: [minTemperature - 5, maxTemperature + 5], // Restrict y-axis domain
       },
-      height: 150,  // Smaller height for the temperature graph
+      height: this.chartThirdHeight, // Smaller height for the temperature graph
+      width: this.chartThirdWidth, // Smaller height for the temperature graph
       style: {
         fontFamily: 'Arial, sans-serif',
       }
@@ -421,6 +399,7 @@ export class PrincipalComponent {
       this.temperatureContainer.nativeElement.appendChild(chart);
     }
   }
+
 
 
 }
