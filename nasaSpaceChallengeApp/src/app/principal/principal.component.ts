@@ -18,6 +18,7 @@ export class PrincipalComponent {
   selectedCrops: string[] = [];
   selectedDays: number | null = null;
   predictions = [];
+  loading = false;
 
 
   forecast = {
@@ -95,13 +96,16 @@ export class PrincipalComponent {
     this.selectedDays = days;
   }
 
-  sendPrediction() {
+  async sendPrediction() {
     if (this.selectedCrops.length > 0 && this.selectedDays) {
 
       let data = {
         crops: this.selectedCrops,
         days: this.selectedDays
       };
+
+      this.loading = true;
+
       this.apiService.getPrediction(data).then((response: any) => {
         if (response && response.predictions) {
           this.predictions = response.predictions;
@@ -161,6 +165,8 @@ export class PrincipalComponent {
               console.error("Falta el pronostico")
               this.launchModal(1)
             }
+
+            this.loading = false;
           })
 
 
@@ -168,9 +174,9 @@ export class PrincipalComponent {
           console.error('Predictions not found in response.');
           this.launchModal(1)
         }
-      });
 
-      //this.router.navigate(['/priceTrends']);
+        this.loading = false;
+      });
 
     } else {
       console.log('Please select at least one crop and a prediction time');
