@@ -18,9 +18,7 @@
     border-bottom-right-radius: 5px;
 }
 
-.btn-crop.active, .btn-days.active {
-    background-color: #999;
-}
+
 
 .map-container {
     position: relative;
@@ -59,6 +57,24 @@ h5{
     margin-top: 50px;
 }
 
+.botones button{
+    transition: background-color 0.3s ease;
+}
+
+.botones button:hover{
+    background-color: rgba(0, 0, 0)
+}
+
+.btn-crop.active, .btn-days.active {
+    background-color: #999;
+}
+
+
+.btn-crop.active:hover, 
+.btn-days.active:hover {
+    background-color: #999 !important; 
+}
+
 .botones-1{
     margin-top: 70px;
 }
@@ -77,17 +93,113 @@ h5{
 }
 
 body{
-    background-image: url('../../assets/Predicrop\ -\ NASA\ SPACE\ apps\ CHALLENGE\ \(13.1\).jpg');
+    background-image: url('../../assets/predictions.jpg');
     background-size: cover; 
     background-position: center;
     background-repeat: no-repeat; 
-    height: 100vh; 
+    height: calc(100vh - 45px); 
     width: 100%; 
     margin: 0; 
     margin-top: -50px;
+    overflow-y: auto;
 }
 
 .container {
     padding-top: 30px;
 }
+
+#btn-back img{
+    width: 20px;
+    height: 20px;
+}
+
+#btn-back{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: black;
+    padding:2.5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+#btn-back:hover{
+    transform: scale(1.1); 
+}
+
+.main-container{
+    margin: 50px 20px 20px 20px ;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 20px;
+    overflow-y: visible;
+    margin-top: 70px;
+
+}
+
+.graficas{
+    width: 100% !important;
+    margin-top: 10px;
+    padding-top: 10px;
+   
+}
+
+.grid1{
+    display: grid;
+    grid-template-columns: 900px 500px;
+    grid-template-rows: 200px 300px;
+    align-items: center;
+    justify-content: flex-start;
+    gap:10px;
+}
+
+
+.first1{
+    grid-column: 1/ 2;
+    grid-row: 1 / 3;
+    align-self: self-start;
+}
+
+.second1{
+    grid-column: 2/ 3;
+    grid-row: 1 / 2;
+    align-self: flex-end;
+}
+
+.third1{
+    grid-column: 2/ 3;
+    grid-row: 2 / 3;
+    align-self: flex-end;
+}
+
+
+.grid2{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 500px 500px 500px;
+    align-items: center;
+    gap: 120px;
+}
+
+.first2{
+    grid-row: 1 / 2;
+}
+
+.second2{
+    grid-row: 2 / 3;
+}
+
+.third2{
+    grid-row: 3/ 4;
+}
+
+
+
 

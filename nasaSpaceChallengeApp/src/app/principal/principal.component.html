@@ -1,9 +1,17 @@
 <body>
 
-  <div class="container mt-5">
+  <app-modal></app-modal>
+
+
+  <div class="main-container">
+    <div class="row" [ngStyle]="{ 'display': displayBackBtn}">
+      <div id='btn-back'>
+        <img (click)="viewButtons()"  src="../../assets/arrow_back.png" alt="">
+      </div>
+    </div>
     <div class="row">
       <!-- Left column -->
-      <div class="col-md-6 ">
+      <div class="col-md-6" [ngStyle]="{ 'display': displayColBtns}">
 
         <div class="botones-1">
 
@@ -36,25 +44,17 @@
         </div>
 
         <div class="mt-4 boton">
-          <button class="send-btn botones" (click)="sendPrediction()">Send</button>
+          <button class="btn-effect1 send-btn botones" (click)="sendPrediction()">Send</button>
         </div>
       </div>
 
       <!-- Right column -->
-      <div class="col-md-6">
-        <div #chart></div>
-        <div #precipitationChart></div>
-        <div #temperatureChart></div>
-        <!--
-        <h5 class="titulo2">Select a place on the Map</h5>
-        <div class="map-container">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345093126!2d144.95373531531775!3d-37.81720997975142!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577e9d78dc2c30!2sFederation+Square!5e0!3m2!1sen!2sau!4v1427011445700"
-            frameborder="0" style="border:0" allowfullscreen>
-          </iframe>
-        </div>-->
+      <div #chartsContainer class="graficas" [ngStyle]="{'display': displayCharts}">
+        <div #chart class="first-chart"></div>
+        <div #precipitationChart class="second-chart"></div>
+        <div #temperatureChart class="third-chart"></div>
       </div>
     </div>
   </div>
 
-</body>
+</body> 
