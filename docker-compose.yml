@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./predicropApi
+      dockerfile: ./Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=True
+    volumes:
+      - src-api:/app
+    restart: unless-stopped
+    develop:
+      watch:
+        - action: sync
+          path: ./predicropApi
+          target: /app
+          ignore:
+            - ./predicropApi/__pycache__/
+
+volumes:
+  src-api:
