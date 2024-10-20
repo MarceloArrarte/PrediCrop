@@ -2,10 +2,10 @@ div {
     background-image: url('../../assets/home.jpg');
     background-size: cover;
     background-position: center;
-    height: calc(100vh - 69px);
+    height: calc(100vh - 64px);
     width: 100%; 
     position: relative;
-    margin-top: -30px
+    margin-top: -35px;
 }
 
 .send-btn {
