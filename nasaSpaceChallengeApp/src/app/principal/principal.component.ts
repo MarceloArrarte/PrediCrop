@@ -96,86 +96,94 @@ export class PrincipalComponent {
   }
 
   sendPrediction() {
-    if (this.selectedCrops.length > 0 && this.selectedDays) {
-
-      let data = {
-        crops: this.selectedCrops,
-        days: this.selectedDays
-      };
-      this.apiService.getPrediction(data).then((response: any) => {
-        if (response && response.predictions) {
-          this.predictions = response.predictions;
-
-          // Ahora hacemos la petición del pronostico del tiempo
-          this.apiService.getForecast(data).then((response: any) => {
-
-            if (response && response.forecast) {
-
-              this.forecast.precipitation = response.forecast.precipitation
-              this.forecast.temp = response.forecast.temp
-
-              this.displayColBtns = "none"
-              this.displayBackBtn = "block"
-              this.displayCharts = "grid"
+    try {
 
 
-              if (this.selectedDays != null && this.selectedDays < 90) {
-                if (this.chartContainer != undefined && this.precipitationContainer != undefined && this.temperatureContainer != undefined) {
-                  this.renderer.addClass(this.chartsContainer.nativeElement, 'grid1');
-                  this.renderer.addClass(this.chartContainer.nativeElement, 'first1');
-                  this.renderer.addClass(this.precipitationContainer.nativeElement, 'second1');
-                  this.renderer.addClass(this.temperatureContainer.nativeElement, 'third1');
+      if (this.selectedCrops.length > 0 && this.selectedDays) {
 
-                  this.chartFirstHeight = 500
-                  this.chartSecondHeight = 250
-                  this.chartThirdHeight = 250
+        let data = {
+          crops: this.selectedCrops,
+          days: this.selectedDays
+        };
+        this.apiService.getPrediction(data).then((response: any) => {
+          if (response && response.predictions) {
+            this.predictions = response.predictions;
 
-                  this.chartFistWidth = 900
-                  this.chartSecondWidth = 500
-                  this.chartThirdWidth = 500
+            // Ahora hacemos la petición del pronostico del tiempo
+            this.apiService.getForecast(data).then((response: any) => {
 
+              if (response && response.forecast) {
+
+                this.forecast.precipitation = response.forecast.precipitation
+                this.forecast.temp = response.forecast.temp
+
+                this.displayColBtns = "none"
+                this.displayBackBtn = "block"
+                this.displayCharts = "grid"
+
+
+                if (this.selectedDays != null && this.selectedDays < 90) {
+                  if (this.chartContainer != undefined && this.precipitationContainer != undefined && this.temperatureContainer != undefined) {
+                    this.renderer.addClass(this.chartsContainer.nativeElement, 'grid1');
+                    this.renderer.addClass(this.chartContainer.nativeElement, 'first1');
+                    this.renderer.addClass(this.precipitationContainer.nativeElement, 'second1');
+                    this.renderer.addClass(this.temperatureContainer.nativeElement, 'third1');
+
+                    this.chartFirstHeight = 500
+                    this.chartSecondHeight = 250
+                    this.chartThirdHeight = 250
+
+                    this.chartFistWidth = 900
+                    this.chartSecondWidth = 500
+                    this.chartThirdWidth = 500
+
+                  }
+
+                } else {
+                  if (this.chartContainer != undefined && this.precipitationContainer != undefined && this.temperatureContainer != undefined) {
+
+                    this.renderer.addClass(this.chartsContainer.nativeElement, 'grid2');
+                    this.renderer.addClass(this.chartContainer.nativeElement, 'first2');
+                    this.renderer.addClass(this.precipitationContainer.nativeElement, 'second2');
+                    this.renderer.addClass(this.temperatureContainer.nativeElement, 'third2');
+
+                    this.chartFirstHeight = 500
+                    this.chartSecondHeight = 500
+                    this.chartThirdHeight = 500
+
+                    this.chartFistWidth = 1500
+                    this.chartSecondWidth = 1500
+                    this.chartThirdWidth = 1500
+                  }
                 }
 
+                this.renderMainChart()
+                this.renderPrecipitationChart()
+                this.renderTemperatureChart()
               } else {
-                if (this.chartContainer != undefined && this.precipitationContainer != undefined && this.temperatureContainer != undefined) {
-
-                  this.renderer.addClass(this.chartsContainer.nativeElement, 'grid2');
-                  this.renderer.addClass(this.chartContainer.nativeElement, 'first2');
-                  this.renderer.addClass(this.precipitationContainer.nativeElement, 'second2');
-                  this.renderer.addClass(this.temperatureContainer.nativeElement, 'third2');
-
-                  this.chartFirstHeight = 500
-                  this.chartSecondHeight = 500
-                  this.chartThirdHeight = 500
-
-                  this.chartFistWidth = 1500
-                  this.chartSecondWidth = 1500
-                  this.chartThirdWidth = 1500
-                }
+                console.error("Falta el pronostico")
+                this.launchModal(1)
               }
-
-              this.renderMainChart()
-              this.renderPrecipitationChart()
-              this.renderTemperatureChart()
-            } else {
-              console.error("Falta el pronostico")
-              this.launchModal(1)
-            }
-          })
+            })
 
 
-        } else {
-          console.error('Predictions not found in response.');
-          this.launchModal(1)
-        }
-      });
+          } else {
+            console.error('Predictions not found in response.');
+            this.launchModal(1)
+          }
+        });
 
-      //this.router.navigate(['/priceTrends']);
+        //this.router.navigate(['/priceTrends']);
 
-    } else {
-      console.log('Please select at least one crop and a prediction time');
-      this.launchModal(2)
-     }
+      } else {
+        console.log('Please select at least one crop and a prediction time');
+        this.launchModal(2)
+      }
+
+    } catch (error) {
+      console.error('Predictions not found in response.');
+      this.launchModal(1)
+    }
   }
 
   viewButtons() {
