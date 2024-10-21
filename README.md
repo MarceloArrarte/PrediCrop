@@ -1,7 +1,12 @@
-```
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
+# Pasos para ejecutar
 
-flask run
+### Frontend
+```sh
+cd nasaSpaceChallengeApp
+ng serve
+```
+
+### Backend
+```sh
+docker compose up --watch
 ```
